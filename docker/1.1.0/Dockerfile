@@ -3,9 +3,12 @@ FROM debian:bullseye-slim
 LABEL maintainer "Infer team"
 
 # mkdir the man/man1 directory due to Debian bug #863199
-RUN apt-get update && \
-  mkdir -p /usr/share/man/man1 && \
-  apt-get install --yes --no-install-recommends \
+run apt-get update
+run apt-get install --yes locales && \
+  sed -ie 's/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/g' /etc/locale.gen && locale-gen
+env LANG zh_CN.UTF-8
+run mkdir -p /usr/share/man/man1
+run apt-get install --yes --no-install-recommends \
   curl \
   libc6-dev \
   openjdk-11-jdk-headless \
